@@ -8,3 +8,4 @@ metadata:
 data:
   # save CPU and memory, we are not in a hurry (default is 20)
   controller.status.processors: "1"
+  server.insecure: "true"
