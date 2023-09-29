@@ -10,6 +10,7 @@ Required tools:
 
 - k3d
 - kustomize
+- argocd
 
 ## Development
 
