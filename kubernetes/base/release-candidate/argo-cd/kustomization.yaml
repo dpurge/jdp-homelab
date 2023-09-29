@@ -4,6 +4,6 @@ kind: Kustomization
 resources:
 - ../../stable/argo-cd
 
-images:
-- name: quay.io/argoproj/argocd
-  newTag: v2.9.0-rc1
+# images:
+# - name: quay.io/argoproj/argocd
+#   newTag: v2.9.0-rc1
