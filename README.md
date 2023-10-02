@@ -36,12 +36,32 @@ kustomize build . | kubectl apply -f -
 kustomize build . | kubectl delete -f -
 ```
 
+```sh
+cd kubernetes/environments/dev/applications/
+kubectl apply -f argo-cd.yaml
+```
+
 Browse to the ArgoCD GUI (<https://localhost:8080/>):
 
 ```sh
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 80:80
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 argocd login 127.0.0.1:8080
+# Set "admin" password to be "password" for easy testing
+#bcrypt(password)=$2a$10$rRyBsGSHK6.uc8fntPwVIuLVHgsAhAX7TcdrqW/RADU0uh7CaChLa
+kubectl -n argocd patch secret argocd-secret -p '{"stringData": {"admin.password": "$2a$10$rRyBsGSHK6.uc8fntPwVIuLVHgsAhAX7TcdrqW/RADU0uh7CaChLa","admin.passwordMtime": "2023-10-02T21:47:40CEST"}}'
+```
+
+```pwsh
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | %{ [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+```
+
+Reset password to the pod name:
+
+```sh
+kubectl -n argocd patch secret argocd-secret  -p '{"data": {"admin.password": null, "admin.passwordMtime": null}}'
+kubectl -n argocd scale deployment argocd-server --replicas=0
+kubectl -n argocd scale deployment argocd-server --replicas=1
 ```
 
 Browse to the Argo Workflows GUI (<https://localhost:8080/>):

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflows
+  namespace: argo
+
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/dpurge/jdp-homelab.git
+    targetRevision: main
+    path: kubernetes/base/release-candidate/argo-workflows
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true

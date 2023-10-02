@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  namespace: workflows
+  name: hello-world
+spec:
+  entrypoint: loop-example
+  arguments:
+    parameters:
+    - name: greetname
+      value: Zenek
+
+  templates:
+  - name: loop-example
+    inputs:
+      parameters:
+      - name: greetname
+    steps:
+    - - name: print-message
+        template: whalesay
+        arguments:
+          parameters:
+          - name: message
+            value: "{{item}}, {{inputs.parameters.greetname}}!"
+        withItems:
+        - Hello
+        - Goodbye
+
+  - name: whalesay
+    inputs:
+      parameters:
+      - name: message
+    container:
+      image: docker/whalesay:latest
+      command: [cowsay]
+      args: ["{{inputs.parameters.message}}"]
