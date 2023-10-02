@@ -6,4 +6,4 @@ metadata:
 
 spec:
   source:
-    path: kubernetes/base/release-candidate/argo-workflows
+    path: kubernetes/environment/jdpnas02/argo-workflows

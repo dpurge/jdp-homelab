@@ -4,3 +4,5 @@ kind: Kustomization
 resources:
 - ../../../base/stable/argo-cd
 
+patches:
+- path: ingress.yaml

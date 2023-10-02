@@ -6,4 +6,4 @@ metadata:
 
 spec:
   source:
-    path: kubernetes/base/release-candidate/argo-cd
+    path: kubernetes/environment/jdpnas02/argo-cd
