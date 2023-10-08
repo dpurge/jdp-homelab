@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metal-lb
+  namespace: metallb-system
+
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/dpurge/jdp-homelab.git'
+    path: kubernetes/environments/jdplnx01/metal-lb
+    targetRevision: main
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: metallb-system
+  syncPolicy: {}
