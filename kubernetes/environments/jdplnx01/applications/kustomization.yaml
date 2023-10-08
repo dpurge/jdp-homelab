@@ -3,7 +3,9 @@ kind: Kustomization
 
 resources:
 - ../../../base/stable/applications
+- metal-lb.yaml
 
 patches:
 - path: argo-cd.yaml
 - path: argo-workflows.yaml
+#- path: metal-lb.yaml
