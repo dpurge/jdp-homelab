@@ -1,0 +1,13 @@
+[homesrv]
+jdplxd01.home.arpa
+
+[homek8s]
+jdplnx01.home.arpa
+
+[homenas]
+jdpnas01.home.arpa
+jdpnas02.home.arpa
+
+[laptop]
+laptop01
+laptop02

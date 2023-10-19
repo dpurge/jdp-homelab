@@ -1,0 +1,11 @@
+---
+
+- name: Set up Windows laptop
+  hosts: "{{ host }}"
+  
+  vars:
+    ansible_connection: winrm
+    ansible_winrm_transport: basic
+
+  vars_files:
+  - variables/windows-tool-versions.yml
