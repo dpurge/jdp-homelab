@@ -1,0 +1,7 @@
+---
+
+- name: Install deno
+  unarchive:
+    src: https://github.com/denoland/deno/releases/download/v{{ version.deno }}/deno-x86_64-unknown-linux-gnu.zip
+    dest: /usr/local/bin
+    remote_src: true
