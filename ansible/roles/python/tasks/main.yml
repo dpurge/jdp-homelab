@@ -1,0 +1,7 @@
+---
+
+- name: Install pyenv
+  ansible.builtin.script: pyenv-install.sh
+
+- name: Install pyenv-profile
+  ansible.builtin.script: pyenv-profile.sh

@@ -3,10 +3,25 @@
 - name: Install APT packages
   ansible.builtin.apt:
     pkg:
+    - build-essential
     - curl
     - jq
+    - libbz2-dev
+    - libffi-dev
+    - liblzma-dev
+    - libncurses5-dev
+    - libncursesw5-dev
+    - libreadline-dev
+    - libssl-dev
+    - libsqlite3-dev
+    - llvm
+    - make
+    - python3-openssl
+    - tk-dev
     - unzip
     - wget
+    - xz-utils
+    - zlib1g-dev
 
 # - name: Get stats of jdp-profile.sh
 #   ansible.builtin.stat:

@@ -7,7 +7,7 @@ then
     chown root:root $PROFILE
 fi
 
-CONTENTS=$(sed '/# Start of common configuration/,/# End of common configuration/d' $PROFILE)
+CONTENTS=$(sed '/# Start of common configuration/,/# End of common configuration/d' $PROFILE | sed '/^$/N;/^\n$/D')
 
 
 IFS='' read -r -d '' COMMON_PROFILE <<'END_OF_PROFILE'
@@ -44,6 +44,5 @@ function path-remove {
 # End of common configuration
 END_OF_PROFILE
 
-echo "$COMMON_PROFILE" > $PROFILE
-# printf "\n" >> $PROFILE
-echo "$CONTENTS" >> $PROFILE
+echo "${COMMON_PROFILE}" > $PROFILE
+echo "${CONTENTS}" >> $PROFILE
