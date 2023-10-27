@@ -1,0 +1,4 @@
+---
+version:
+  taskfile: 3.31.0
+  yq: 1

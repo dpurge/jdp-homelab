@@ -1,0 +1,14 @@
+---
+
+- name: Extract GoLang
+  unarchive:
+    src: https://go.dev/dl/go{{ version.go }}.linux-amd64.tar.gz
+    dest: /usr/local/
+    remote_src: true
+    include:
+    - go
+  # notify:
+  # - path changed
+
+- name: Install go-profile
+  ansible.builtin.script: go-profile.sh

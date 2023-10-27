@@ -15,7 +15,7 @@ Set up WinRM on the laptop:
 # TODO
 ```
 
-Run playbook against your laptop:
+Run playbook against Windows on your laptop:
 
 ```sh
 ansible-playbook --inventory inventory/homelab/hosts win-laptop.yml --extra-vars "host=laptop01 ansible_user=MyUser ansible_password=MyPass"

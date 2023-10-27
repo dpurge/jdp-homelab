@@ -1,0 +1,20 @@
+---
+
+- name: Install K3d
+  get_url:
+    url: https://github.com/k3d-io/k3d/releases/download/v{{ version.k3d }}/k3d-linux-amd64
+    dest: /usr/local/bin/k3d
+    mode: 0755
+
+- name: Install k3d-profile
+  ansible.builtin.script: k3d-profile.sh
+
+- name: Install K9s
+  unarchive:
+    src: https://github.com/derailed/k9s/releases/download/v{{ version.k9s }}/k9s_Linux_amd64.tar.gz
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    remote_src: true
+    include:
+    - k9s

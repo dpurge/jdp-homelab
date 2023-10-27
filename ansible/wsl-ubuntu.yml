@@ -5,47 +5,9 @@
   connection: local
   become: true
 
-  vars_files:
-  - variables/linux-tool-versions.yml
-
-  tasks:
-
-  - name: Install APT packages
-    ansible.builtin.apt:
-      pkg:
-      - curl
-      - jq
-      - unzip
-      - wget
-
-  - name: Install K3d
-    get_url:
-      url: https://github.com/k3d-io/k3d/releases/download/v{{ version.k3d }}/k3d-linux-amd64
-      dest: /usr/local/bin/k3d
-      mode: 0755
-
-  - name: Install K9s
-    unarchive:
-      src: https://github.com/derailed/k9s/releases/download/v{{ version.k9s }}/k9s_Linux_amd64.tar.gz
-      dest: /usr/local/bin
-      owner: root
-      group: root
-      remote_src: true
-      include:
-      - k9s
-
-  - name: Install terraform
-    unarchive:
-      src: https://releases.hashicorp.com/terraform/{{ version.terraform }}/terraform_{{ version.terraform }}_linux_amd64.zip
-      dest: /usr/local/bin
-      remote_src: true
-      include:
-      - terraform
-
-  - name: List /usr/local/bin
-    shell: ls -lrt /usr/local/bin
-    register: output
-
-  - debug:
-      var: output.stdout_lines
-      
+  roles:
+  - ubuntu-base
+  - terraform-tools
+  - kubernetes-tools
+  - go-lang
+  

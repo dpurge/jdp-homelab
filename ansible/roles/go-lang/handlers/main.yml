@@ -1,0 +1,5 @@
+---
+
+- name: Path changed
+  listen: path changed
+  script: path-changed.sh

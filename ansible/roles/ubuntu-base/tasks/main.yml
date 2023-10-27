@@ -1,0 +1,44 @@
+---
+
+- name: Install APT packages
+  ansible.builtin.apt:
+    pkg:
+    - curl
+    - jq
+    - unzip
+    - wget
+
+# - name: Get stats of jdp-profile.sh
+#   ansible.builtin.stat:
+#     path: /etc/profile.d/jdp-profile.sh
+#   register: profile
+
+# - name: Install jdp-profile.sh
+#   ansible.builtin.copy:
+#     src: jdp-profile.sh
+#     dest: /etc/profile.d/jdp-profile.sh
+#     owner: root
+#     group: root
+#     mode: u=rwx,g=rx,o=rx
+#   when: not profile.stat.exists
+
+- name: Install jdp-profile
+  ansible.builtin.script: jdp-profile.sh
+
+- name: Install task
+  unarchive:
+    src: https://github.com/go-task/task/releases/download/v{{ version.taskfile }}/task_linux_amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: true
+    include:
+    - task
+
+- name: Install task completion
+  unarchive:
+    src: https://github.com/go-task/task/releases/download/v{{ version.taskfile }}/task_linux_amd64.tar.gz
+    dest: /etc/bash_completion.d/
+    remote_src: true
+    extra_opts: [--strip-components=2]
+    include:
+    - completion/bash/task.bash
+  
