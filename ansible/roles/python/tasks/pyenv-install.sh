@@ -11,12 +11,6 @@ else
   git -c advice.detachedHead=0 clone --depth 1 https://github.com/pyenv/pyenv.git "${PYENV_ROOT}"
 fi
 
-# if ! [ -d "${PYENV_ROOT}/cache" ]
-# then
-#   mkdir "${PYENV_ROOT}/cache"
-#   chmod --reference=/tmp "${PYENV_ROOT}/cache"
-# fi
-
 if [ -d "${PYENV_ROOT}/plugins/pyenv-doctor" ]
 then
   pushd "${PYENV_ROOT}/plugins/pyenv-doctor"
