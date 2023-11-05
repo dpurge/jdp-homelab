@@ -16,6 +16,7 @@
     - libsqlite3-dev
     - llvm
     - make
+    - mc
     - python3-openssl
     - tk-dev
     - unzip

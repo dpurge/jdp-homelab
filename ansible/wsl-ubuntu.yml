@@ -6,10 +6,10 @@
   become: true
 
   roles:
-  # - ubuntu-base
-  # - terraform-tools
-  # - kubernetes-tools
-  # - go-lang
-  # - python
+  - ubuntu-base
+  - terraform-tools
+  - kubernetes-tools
+  - go-lang
+  - python
   - nodejs
   
