@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+data="/var/cronjob/youtube"
+cfg="config.txt"
+
+for i in $(find $data -type f -name $cfg)
+do
+  pushd $(dirname $i) > /dev/null
+  echo "===== $i ====="
+  yt-dlp --config-location $cfg || true
+  popd > /dev/null
+done
