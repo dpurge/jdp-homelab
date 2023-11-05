@@ -2,7 +2,7 @@ version: '3'
 
 services:
   jdp-airflow:
-    image: jdp-airflow:latest
+    image: dpurge/jdp-airflow:latest
 
     volumes:
       - ./airflow:/opt/airflow
