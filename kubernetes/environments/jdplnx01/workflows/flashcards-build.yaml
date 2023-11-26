@@ -14,7 +14,7 @@ spec:
       - name: image
         value: dpurge/jdp-buildenv:2023-11-22
       - name: repo
-        value: https://git@github.com/dpurge/jdp-flashcards.git
+        value: https://github.com/dpurge/jdp-flashcards.git
       - name: branch
         value: main
       - name: output
@@ -41,8 +41,9 @@ spec:
         args:
           - sh
         source: |
-          echo My github token is $GITHUB_READ_TOKEN
-          git clone -c http.extraHeader="Authorization: Bearer $GITHUB_READ_TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+          PAT=$(echo -n $GITHUB_READ_TOKEN | base64)
+          echo My PAT is $PAT
+          git clone -c http.extraHeader="Authorization: Bearer $PAT" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
