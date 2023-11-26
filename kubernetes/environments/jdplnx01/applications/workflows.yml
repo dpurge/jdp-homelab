@@ -5,6 +5,9 @@ metadata:
   namespace: workflows
 spec:
   project: infrastructure
+  destination:
+    namespace: workflows
+    server: https://kubernetes.default.svc
   source:
     path: kubernetes/environments/jdplnx01/workflows
     repoURL: https://github.com/dpurge/jdp-homelab.git
