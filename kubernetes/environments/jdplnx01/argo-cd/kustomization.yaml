@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - ../../../base/stable/argo-cd
+- workflows.yaml
 
 patches:
 - path: ingress.yaml
