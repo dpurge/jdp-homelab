@@ -47,7 +47,7 @@ spec:
           - sh
         source: |
           # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
-          git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} http://git:$GITHUB_PASSWORD@github.com/dpurge/jdp-flashcards.git .
+          git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} http://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/dpurge/jdp-flashcards.git .
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
