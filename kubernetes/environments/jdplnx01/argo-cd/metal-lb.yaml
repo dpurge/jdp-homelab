@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metal-lb
-  namespace: metallb-system
+  namespace: argocd
 
 spec:
   ignoreDifferences:
