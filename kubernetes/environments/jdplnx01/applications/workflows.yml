@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: workflows
+  namespace: workflows
+spec:
+  project: infrastructure
+  source:
+    path: kubernetes/environments/jdplnx01/workflows
+    repoURL: https://github.com/dpurge/jdp-homelab.git
+    targetRevision: main
