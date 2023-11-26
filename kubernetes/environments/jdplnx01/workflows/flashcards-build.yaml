@@ -14,7 +14,7 @@ spec:
       - name: image
         value: dpurge/jdp-buildenv:2023-11-22
       - name: repo
-        value: https://github.com/dpurge/jdp-flashcards.git
+        value: http://github.com/dpurge/jdp-flashcards.git
       - name: branch
         value: main
       - name: output
@@ -33,7 +33,12 @@ spec:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace
         env:
-          - name: GITHUB_READ_TOKEN
+          - name: GITHUB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: workflow-secrets
+                key: github-username
+          - name: GITHUB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: workflow-secrets
@@ -41,9 +46,9 @@ spec:
         args:
           - sh
         source: |
-          PAT=$(echo -n $GITHUB_READ_TOKEN | base64)
-          echo My PAT is $PAT
-          git clone -c http.extraHeader="Authorization: Bearer $PAT" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+          TOKEN=$(echo -n $GITHUB_USERNAME:$GITHUB_PASSWORD | base64)
+          echo My TOKEN is $TOKEN
+          git clone -c http.extraHeader="Authorization: Basic $TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
