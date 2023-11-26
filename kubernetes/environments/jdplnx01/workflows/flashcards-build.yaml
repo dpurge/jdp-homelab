@@ -5,6 +5,10 @@ metadata:
   name: flashcards-build
 spec:
   entrypoint: main
+  #volumes:
+  #  - name: workflow-secrets
+  #    secret:
+  #      secretName: workflow-secrets
   arguments:
     parameters:
       - name: image
@@ -36,7 +40,9 @@ spec:
         workingDir: /workspace
         args:
           - sh
-        source: 'git clone -c http.extraHeader="Authorization: Bearer $GITHUB_READ_TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .'
+        source: |
+          echo $GITHUB_READ_TOKEN
+          git clone -c http.extraHeader="Authorization: Bearer $GITHUB_READ_TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
