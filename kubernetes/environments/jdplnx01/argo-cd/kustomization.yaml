@@ -3,10 +3,10 @@ kind: Kustomization
 
 resources:
 - ../../../base/stable/argo-cd
+- metal-lb.yaml
 - argo-cd.yaml
 - argo-workflows.yaml
 - workflows.yaml
-- metal-lb.yaml
 
 patches:
 - path: ingress.yaml

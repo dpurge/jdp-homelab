@@ -25,12 +25,18 @@ spec:
         - - name: publish
             template: publish
     - name: checkout
+      env:
+        - name: GITHUB_READ_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: workflow-secrets
+              key: github-password
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace
         args:
           - sh
-        source: git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+        source: git clone -c http.extraHeader="Authorization: Bearer $GITHUB_READ_TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
         volumeMounts:
           - mountPath: /workspace
             name: flashcards

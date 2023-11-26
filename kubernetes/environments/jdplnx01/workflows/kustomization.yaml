@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
 - ../../../base/stable/workflows
-- flashcards.yaml
+- flashcards-build.yaml
