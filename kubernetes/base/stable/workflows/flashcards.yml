@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: flashcards-build
+spec:
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: image
+        value: dpurge/jdp-buildenv:2023-11-22
+      - name: repo
+        value: https://github.com/dpurge/jdp-flashcards.git
+      - name: branch
+        value: main
+      - name: output
+        value: out
+  templates:
+    - name: main
+      steps:
+        - - name: checkout
+            template: checkout
+        - - name: build
+            template: build
+        - - name: publish
+            template: publish
+    - name: checkout
+      script:
+        image: {{workflow.parameters.image}}
+        workingDir: /workspace
+        args:
+          - sh
+        source: git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+        volumeMounts:
+          - mountPath: /workspace
+            name: flashcards
+    - name: build
+      script:
+        image: {{workflow.parameters.image}}
+        workingDir: /workspace
+        args:
+          - sh
+        source: task build-all
+        volumeMounts:
+          - mountPath: /workspace
+            name: flashcards
+    - name: publish
+      script:
+        image: {{workflow.parameters.image}}
+        workingDir: /workspace
+        args:
+          - sh
+        source: ls -la /workspace/{{workflow.parameters.output}}
+        volumeMounts:
+          - mountPath: /workspace
+            name: flashcards
+  volumeClaimTemplates:
+    - name: flashcards
+      metadata:
+        name: flashcards
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 400Mi
