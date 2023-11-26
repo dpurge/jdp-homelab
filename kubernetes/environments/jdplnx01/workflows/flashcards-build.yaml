@@ -41,7 +41,7 @@ spec:
         args:
           - sh
         source: |
-          echo $GITHUB_READ_TOKEN
+          echo My github token is $GITHUB_READ_TOKEN
           git clone -c http.extraHeader="Authorization: Bearer $GITHUB_READ_TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
         volumeMounts:
           - mountPath: /workspace
