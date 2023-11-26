@@ -10,7 +10,7 @@ spec:
       - name: image
         value: dpurge/jdp-buildenv:2023-11-22
       - name: repo
-        value: https://github.com/dpurge/jdp-flashcards.git
+        value: https://git@github.com/dpurge/jdp-flashcards.git
       - name: branch
         value: main
       - name: output
