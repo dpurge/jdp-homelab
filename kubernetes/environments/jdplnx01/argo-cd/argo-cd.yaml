@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: workflows
+  name: argo-cd
   namespace: argocd
-  
+
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: workflows
+    namespace: argocd
   source:
     repoURL: https://github.com/dpurge/jdp-homelab.git
-    path: kubernetes/environments/jdplnx01/workflows
+    path: kubernetes/environments/jdplnx01/argo-cd
     targetRevision: main

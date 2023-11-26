@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
 - ../../../base/stable/argo-cd
+- argo-cd.yaml
+- argo-workflows.yaml
 - workflows.yaml
 
 patches:

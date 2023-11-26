@@ -5,5 +5,11 @@ metadata:
   namespace: argo
 
 spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
   source:
+    repoURL: https://github.com/dpurge/jdp-homelab.git
     path: kubernetes/environments/jdplnx01/argo-workflows
+    targetRevision: main
