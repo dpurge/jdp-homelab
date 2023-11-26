@@ -26,7 +26,7 @@ spec:
             template: publish
     - name: checkout
       script:
-        image: {{workflow.parameters.image}}
+        image: "{{workflow.parameters.image}}"
         workingDir: /workspace
         args:
           - sh
@@ -36,7 +36,7 @@ spec:
             name: flashcards
     - name: build
       script:
-        image: {{workflow.parameters.image}}
+        image: "{{workflow.parameters.image}}"
         workingDir: /workspace
         args:
           - sh
@@ -46,7 +46,7 @@ spec:
             name: flashcards
     - name: publish
       script:
-        image: {{workflow.parameters.image}}
+        image: "{{workflow.parameters.image}}"
         workingDir: /workspace
         args:
           - sh
