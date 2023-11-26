@@ -29,15 +29,15 @@ spec:
         - - name: publish
             template: publish
     - name: checkout
-      env:
-        - name: GITHUB_READ_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: workflow-secrets
-              key: github-password
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace
+        env:
+          - name: GITHUB_READ_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: workflow-secrets
+                key: github-password
         args:
           - sh
         source: |
