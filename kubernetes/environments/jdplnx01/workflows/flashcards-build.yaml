@@ -36,7 +36,7 @@ spec:
         workingDir: /workspace
         args:
           - sh
-        source: git clone -c http.extraHeader="Authorization: Bearer $GITHUB_READ_TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+        source: 'git clone -c http.extraHeader="Authorization: Bearer $GITHUB_READ_TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .'
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
