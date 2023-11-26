@@ -48,7 +48,7 @@ spec:
         source: |
           TOKEN=$(echo -n $GITHUB_USERNAME:$GITHUB_PASSWORD | base64)
           echo My TOKEN is $TOKEN
-          git clone -c http.extraHeader="Authorization: Basic $TOKEN" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+          git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
