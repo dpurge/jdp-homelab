@@ -55,6 +55,7 @@ spec:
           mkdir -m 700 ~/.ssh
           ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
           echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
+          chmod  400 ~/.ssh/id_rsa
           # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
           # git clone {{workflow.parameters.repo}} .
           rm -fr * .*
