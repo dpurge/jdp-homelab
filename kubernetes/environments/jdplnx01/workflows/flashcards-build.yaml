@@ -14,7 +14,7 @@ spec:
       - name: image
         value: dpurge/jdp-buildenv:2023-11-22
       - name: repo
-        value: https://github.com/dpurge/jdp-homelab.git
+        value: https://github.com/dpurge/jdp-flashcards.git
       - name: branch
         value: main
       - name: output
@@ -29,6 +29,19 @@ spec:
         - - name: publish
             template: publish
     - name: checkout
+      inputs:
+        artifacts:
+        - name: argo-source
+          path: /workspace
+          git:
+            repo: https://github.com/dpurge/jdp-flashcards.git
+            revision: main
+            usernameSecret:
+              name: workflow-secrets
+              key: github-username
+            passwordSecret:
+              name: workflow-secrets
+              key: github-password
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace
@@ -43,16 +56,6 @@ spec:
           #    secretKeyRef:
           #      name: workflow-secrets
           #      key: github-password
-          - name: SSH_PRIVATE_KEY
-            valueFrom:
-              secretKeyRef:
-                name: workflow-secrets
-                key: ssh-private-key
-          - name: SSH_PUBLIC_KEY
-            valueFrom:
-              secretKeyRef:
-                name: workflow-secrets
-                key: ssh-public-key
         args:
           - sh
         source: |
@@ -72,8 +75,8 @@ spec:
           #chmod  400 ~/.ssh/config
           # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
           # git clone {{workflow.parameters.repo}} .
-          rm -fr * .*
-          git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+          #rm -fr * .*
+          #git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
           ls -la .
         volumeMounts:
           - mountPath: /workspace
