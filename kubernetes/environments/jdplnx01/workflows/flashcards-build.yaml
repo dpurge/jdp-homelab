@@ -13,16 +13,14 @@ spec:
         value: https://github.com/dpurge/jdp-flashcards.git
       - name: branch
         value: main
-      - name: output
-        value: out
-      - name: artifacts_server
-        value: //jdpnas01.home.arpa/AppData
-      - name: artifacts_path
-        value: workflows/flashcards
+      - name: dist
+        value: /workspace/dist
+      - name: artifacts
+        value: /var/jdpnas01/AppData/workflows/flashcards
   volumes:
-    - name: flashcards
+    - name: artifacts
       hostPath:
-        path: /var/jdpnas01/AppData/workflows/flashcards
+        path: "{{workflow.parameters.artifacts}}"
         type: Directory
   templates:
     - name: main
@@ -34,10 +32,10 @@ spec:
     - name: build
       inputs:
         artifacts:
-        - name: argo-source
+        - name: source
           path: /workspace/src
           git:
-            repo: https://github.com/dpurge/jdp-flashcards.git
+            repo: "{{workflow.parameters.repo}}"
             revision: main
             usernameSecret:
               name: workflow-secrets
@@ -52,7 +50,7 @@ spec:
           - sh
         source: |
           task build-all
-          mv out /workspace/{{workflow.parameters.output}}
+          mv out {{workflow.parameters.dist}}
           cd ..
           rm -rf src
         volumeMounts:
@@ -65,28 +63,14 @@ spec:
         args:
           - sh
         source: |
-          #apt install -y smbclient
-          #smbclient '{{workflow.parameters.artifacts_server}}' -c 'lcd /workspace/{{workflow.parameters.output}}; cd {{workflow.parameters.artifacts_path}}; prompt OFF; mput *.apkg' -U $ARTIFACTS_USERNAME%$ARTIFACTS_PASSWORD
-          #rm -Rf /workspace/{{workflow.parameters.output}}
-          ls -la /flashcards
-          mv /workspace/{{workflow.parameters.output}}/*.apkg /flashcards/
-          rm -Rf /workspace/{{workflow.parameters.output}}
-        env:
-          - name: ARTIFACTS_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: workflow-secrets
-                key: samba-username
-          - name: ARTIFACTS_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: workflow-secrets
-                key: samba-password
+          mv {{workflow.parameters.dist}}/*.apkg /artifacts/
+          rm -Rf {{workflow.parameters.dist}}
+          ls -la /artifacts
         volumeMounts:
           - mountPath: /workspace
             name: workspace
-          - mountPath: /flashcards
-            name: flashcards
+          - mountPath: /artifacts
+            name: artifacts
   volumeClaimTemplates:
     - name: workspace
       metadata:
@@ -95,4 +79,4 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: 400Mi
+            storage: 500Mi
