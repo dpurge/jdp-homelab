@@ -51,7 +51,7 @@ spec:
         args:
           - sh
         source: |
-          apt-get install openssh-client
+          apt-get install -y openssh-client
           mkdir -m 700 ~/.ssh
           touch -m 600 ~/.ssh/known_hosts
           echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
