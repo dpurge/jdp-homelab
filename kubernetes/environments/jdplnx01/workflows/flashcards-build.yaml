@@ -59,6 +59,7 @@ spec:
           # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
           # git clone {{workflow.parameters.repo}} .
           rm -fr * .*
+          ssh -vT git@github.com
           git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
         volumeMounts:
           - mountPath: /workspace
