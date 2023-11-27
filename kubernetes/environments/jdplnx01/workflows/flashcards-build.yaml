@@ -19,6 +19,11 @@ spec:
         value: //jdpnas01.home.arpa/AppData
       - name: artifacts_path
         value: workflows/flashcards
+  volumes:
+    - name: flashcards
+      hostPath:
+        path: /var/jdpnas01/AppData/workflows/flashcards
+        type: Directory
   templates:
     - name: main
       steps:
@@ -52,7 +57,7 @@ spec:
           rm -rf src
         volumeMounts:
           - mountPath: /workspace
-            name: flashcards
+            name: workspace
     - name: publish
       script:
         image: "{{workflow.parameters.image}}"
@@ -60,8 +65,11 @@ spec:
         args:
           - sh
         source: |
-          apt install -y smbclient
-          smbclient '{{workflow.parameters.artifacts_server}}' -c 'lcd /workspace/{{workflow.parameters.output}}; cd {{workflow.parameters.artifacts_path}}; prompt OFF; mput *.apkg' -U $ARTIFACTS_USERNAME%$ARTIFACTS_PASSWORD
+          #apt install -y smbclient
+          #smbclient '{{workflow.parameters.artifacts_server}}' -c 'lcd /workspace/{{workflow.parameters.output}}; cd {{workflow.parameters.artifacts_path}}; prompt OFF; mput *.apkg' -U $ARTIFACTS_USERNAME%$ARTIFACTS_PASSWORD
+          #rm -Rf /workspace/{{workflow.parameters.output}}
+          ls -la /flashcards
+          mv /workspace/{{workflow.parameters.output}}/*.apkg /flashcards/
           rm -Rf /workspace/{{workflow.parameters.output}}
         env:
           - name: ARTIFACTS_USERNAME
@@ -76,11 +84,13 @@ spec:
                 key: samba-password
         volumeMounts:
           - mountPath: /workspace
+            name: workspace
+          - mountPath: /flashcards
             name: flashcards
   volumeClaimTemplates:
-    - name: flashcards
+    - name: workspace
       metadata:
-        name: flashcards
+        name: workspace
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
