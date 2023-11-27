@@ -5,10 +5,6 @@ metadata:
   name: flashcards-build
 spec:
   entrypoint: main
-  #volumes:
-  #  - name: workflow-secrets
-  #    secret:
-  #      secretName: workflow-secrets
   arguments:
     parameters:
       - name: image
@@ -22,17 +18,15 @@ spec:
   templates:
     - name: main
       steps:
-        - - name: checkout
-            template: checkout
         - - name: build
             template: build
         - - name: publish
             template: publish
-    - name: checkout
+    - name: build
       inputs:
         artifacts:
         - name: argo-source
-          path: /workspace/jdp-flashcards
+          path: /workspace/src
           git:
             repo: https://github.com/dpurge/jdp-flashcards.git
             revision: main
@@ -44,47 +38,7 @@ spec:
               key: github-password
       script:
         image: "{{workflow.parameters.image}}"
-        workingDir: /workspace
-        env:
-          #- name: GITHUB_USERNAME
-          #  valueFrom:
-          #    secretKeyRef:
-          #      name: workflow-secrets
-          #      key: github-username
-          #- name: GITHUB_PASSWORD
-          #  valueFrom:
-          #    secretKeyRef:
-          #      name: workflow-secrets
-          #      key: github-password
-        args:
-          - sh
-        source: |
-          #apt-get install -y openssh-client
-          #mkdir -m 700 ~/.ssh
-          #ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
-          #echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
-          #echo $SSH_PUBLIC_KEY > ~/.ssh/id_rsa.pub
-          #cat <<EOF >>~/.ssh/config
-          #Host github.com
-          #  IdentityFile ~/.ssh/id_rsa
-          #  IdentitiesOnly yes
-          #  User git
-          #EOF
-          #chmod  400 ~/.ssh/id_rsa
-          #chmod  644 ~/.ssh/id_rsa.pub
-          #chmod  400 ~/.ssh/config
-          # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
-          # git clone {{workflow.parameters.repo}} .
-          #rm -fr * .*
-          #git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
-          ls -la .
-        volumeMounts:
-          - mountPath: /workspace
-            name: flashcards
-    - name: build
-      script:
-        image: "{{workflow.parameters.image}}"
-        workingDir: /workspace
+        workingDir: /workspace/src
         args:
           - sh
         source: task build-all
