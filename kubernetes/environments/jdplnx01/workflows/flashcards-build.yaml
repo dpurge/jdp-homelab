@@ -48,6 +48,11 @@ spec:
               secretKeyRef:
                 name: workflow-secrets
                 key: ssh-private-key
+          - name: SSH_PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: workflow-secrets
+                key: ssh-public-key
         args:
           - sh
         source: |
@@ -55,7 +60,9 @@ spec:
           mkdir -m 700 ~/.ssh
           ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
           echo -n $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
+          echo -n $SSH_PUBLIC_KEY > ~/.ssh/id_rsa.pub
           chmod  400 ~/.ssh/id_rsa
+          chmod  644 ~/.ssh/id_rsa.pub
           # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
           # git clone {{workflow.parameters.repo}} .
           rm -fr * .*
