@@ -5,10 +5,10 @@ metadata:
   name: flashcards-build
 spec:
   entrypoint: main
-  #volumes:
-  #  - name: workflow-secrets
-  #    secret:
-  #      secretName: workflow-secrets
+  volumes:
+    - name: workflow-secrets
+      secret:
+        secretName: ssh-private-key
   arguments:
     parameters:
       - name: image
@@ -32,25 +32,27 @@ spec:
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace
-        env:
-          - name: GITHUB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: workflow-secrets
-                key: github-username
-          - name: GITHUB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: workflow-secrets
-                key: github-password
+        #env:
+        #  - name: GITHUB_USERNAME
+        #    valueFrom:
+        #      secretKeyRef:
+        #        name: workflow-secrets
+        #        key: github-username
+        #  - name: GITHUB_PASSWORD
+        #    valueFrom:
+        #      secretKeyRef:
+        #        name: workflow-secrets
+        #        key: github-password
         args:
           - sh
         source: |
           # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
-          git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} http://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/dpurge/jdp-flashcards.git .
+          cat /secret/id_rsa
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
+          - name: workflow-secrets
+            mountPath: "/secret/id_rsa"
     - name: build
       script:
         image: "{{workflow.parameters.image}}"
