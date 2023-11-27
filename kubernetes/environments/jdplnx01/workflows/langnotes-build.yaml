@@ -64,7 +64,8 @@ spec:
         args:
           - sh
         source: |
-          mv {{workflow.parameters.dist}}/*.{pdf,epub} /artifacts/
+          mv {{workflow.parameters.dist}}/*.epub /artifacts/
+          mv {{workflow.parameters.dist}}/*.pdf /artifacts/
           rm -Rf {{workflow.parameters.dist}}
           ls -la /artifacts
         volumeMounts:
