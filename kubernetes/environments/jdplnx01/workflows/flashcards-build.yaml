@@ -59,8 +59,8 @@ spec:
           apt-get install -y openssh-client
           mkdir -m 700 ~/.ssh
           ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
-          echo -n $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
-          echo -n $SSH_PUBLIC_KEY > ~/.ssh/id_rsa.pub
+          echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
+          echo $SSH_PUBLIC_KEY > ~/.ssh/id_rsa.pub
           cat <<EOF >>~/.ssh/config
           Host github.com
             IdentityFile ~/.ssh/id_rsa
