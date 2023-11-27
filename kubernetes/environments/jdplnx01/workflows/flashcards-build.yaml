@@ -32,7 +32,7 @@ spec:
       inputs:
         artifacts:
         - name: argo-source
-          path: /workspace
+          path: /workspace/jdp-flashcards
           git:
             repo: https://github.com/dpurge/jdp-flashcards.git
             revision: main
