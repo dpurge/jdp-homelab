@@ -53,9 +53,8 @@ spec:
         source: |
           apt-get install -y openssh-client
           mkdir -m 700 ~/.ssh
-          touch -m 600 ~/.ssh/known_hosts
+          ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
           echo $SSH_PRIVATE_KEY > ~/.ssh/id_rsa
-          cat ~/.ssh/id_rsa
           # git clone -c http.extraHeader="Authorization: Bearer \"$TOKEN\"" --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
           # git clone {{workflow.parameters.repo}} .
           rm -fr * .*
