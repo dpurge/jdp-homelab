@@ -74,6 +74,7 @@ spec:
           # git clone {{workflow.parameters.repo}} .
           rm -fr * .*
           git clone --depth 1 --single-branch --branch {{workflow.parameters.branch}} {{workflow.parameters.repo}} .
+          ls -la .
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
