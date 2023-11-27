@@ -41,7 +41,9 @@ spec:
         workingDir: /workspace/src
         args:
           - sh
-        source: task build-all
+        source: |
+          task build-all
+          mv out /workspace/{{workflow.parameters.output}}
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
@@ -51,7 +53,9 @@ spec:
         workingDir: /workspace
         args:
           - sh
-        source: ls -la /workspace/{{workflow.parameters.output}}
+        source: |
+          rm -rf /workspace/src
+          ls -la /workspace/{{workflow.parameters.output}}
         volumeMounts:
           - mountPath: /workspace
             name: flashcards
