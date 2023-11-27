@@ -15,8 +15,10 @@ spec:
         value: main
       - name: output
         value: out
-      - name: artifacts
-        value: //jdpnas01.home.arpa/AppData/workflows/flashcards
+      - name: artifacts_server
+        value: //jdpnas01.home.arpa/AppData
+      - name: artifacts_path
+        value: workflows/flashcards
   templates:
     - name: main
       steps:
@@ -58,10 +60,9 @@ spec:
         args:
           - sh
         source: |
-          mkdir /workspace/artifacts
-          mount -t cifs -o username=$ARTIFACTS_USERNAME,password=$ARTIFACTS_PASSWORD,rw,nounix,iocharset=utf8,file_mode=0777,dir_mode=0777 {{workflow.parameters.artifacts}} /workspace/artifacts
-          mv /workspace/{{workflow.parameters.output}}/*.apkg /workspace/artifacts/
-          umount /workspace/artifacts/
+          apt install -y smbclient
+          smbclient '{{workflow.parameters.artifacts_server}}' \
+            -c 'lcd /workspace/{{workflow.parameters.output}}; cd {{workflow.parameters.artifacts_path}}; recurse ON; prompt OFF; mput *.apkg' -U $ARTIFACTS_USERNAME%$ARTIFACTS_PASSWORD
           rm -Rf /workspace/{{workflow.parameters.output}}
         env:
           - name: ARTIFACTS_USERNAME
