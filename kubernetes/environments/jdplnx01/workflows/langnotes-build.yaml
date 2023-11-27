@@ -1,0 +1,83 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  namespace: workflows
+  name: langnotes-build
+spec:
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: image
+        value: dpurge/jdp-buildenv:2023-11-22
+      - name: repo
+        value: https://github.com/dpurge/jdp-langnotes.git
+      - name: branch
+        value: main
+      - name: dist
+        value: /workspace/dist
+      - name: artifacts
+        value: /var/jdpnas01/AppData/workflows/langnotes
+  volumes:
+    - name: artifacts
+      hostPath:
+        path: "{{workflow.parameters.artifacts}}"
+        type: Directory
+  templates:
+    - name: main
+      steps:
+        - - name: build
+            template: build
+        - - name: publish
+            template: publish
+    - name: build
+      inputs:
+        artifacts:
+        - name: source
+          path: /workspace/src
+          git:
+            repo: "{{workflow.parameters.repo}}"
+            revision: main
+            usernameSecret:
+              name: workflow-secrets
+              key: github-username
+            passwordSecret:
+              name: workflow-secrets
+              key: github-password
+      script:
+        image: "{{workflow.parameters.image}}"
+        workingDir: /workspace/src
+        args:
+          - sh
+        source: |
+          task build-all
+          task pdf
+          mv out {{workflow.parameters.dist}}
+          cd ..
+          rm -rf src
+        volumeMounts:
+          - mountPath: /workspace
+            name: workspace
+    - name: publish
+      script:
+        image: "{{workflow.parameters.image}}"
+        workingDir: /workspace
+        args:
+          - sh
+        source: |
+          mv {{workflow.parameters.dist}}/*.{pdf,epub} /artifacts/
+          rm -Rf {{workflow.parameters.dist}}
+          ls -la /artifacts
+        volumeMounts:
+          - mountPath: /workspace
+            name: workspace
+          - mountPath: /artifacts
+            name: artifacts
+  volumeClaimTemplates:
+    - name: workspace
+      metadata:
+        name: workspace
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 500Mi
