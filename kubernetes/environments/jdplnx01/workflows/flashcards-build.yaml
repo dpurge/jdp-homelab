@@ -61,8 +61,11 @@ spec:
           - sh
         source: |
           apt install -y smbclient
+          echo $ARTIFACTS_USERNAME
+          echo $ARTIFACTS_PASSWORD
           smbclient '{{workflow.parameters.artifacts_server}}' \
-            -c 'lcd /workspace/{{workflow.parameters.output}}; cd {{workflow.parameters.artifacts_path}}; recurse ON; prompt OFF; mput *.apkg' -U $ARTIFACTS_USERNAME%$ARTIFACTS_PASSWORD
+            -c 'lcd /workspace/{{workflow.parameters.output}}; cd {{workflow.parameters.artifacts_path}}; recurse ON; prompt OFF; mput *.apkg' \
+            -U $ARTIFACTS_USERNAME%$ARTIFACTS_PASSWORD
           rm -Rf /workspace/{{workflow.parameters.output}}
         env:
           - name: ARTIFACTS_USERNAME
