@@ -35,21 +35,10 @@ spec:
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace/src
-        source: |
-          mkdir -p /kaniko/.docker
-          AUTH=$(echo -n "test:pass" | base64)
-          cat << EOF > /kaniko/.docker/config.json
-          {
-              "auths": {
-                  "https://index.docker.io/v1/": {
-                      "auth": "${AUTH}"
-                  }
-              }
-          }
-          EOF
-          /kaniko/executor \
-            --context /workspace/src/jdp-buildenv \
-            --dockerfile /workspace/src/jdp-buildenv/Dockerfile
+        args:
+          - --context=/workspace/src/jdp-buildenv
+          - --dockerfile /workspace/src/jdp-buildenv/Dockerfile
+          - --cache=false            
         volumeMounts:
           - mountPath: /workspace
             name: workspace
