@@ -90,3 +90,11 @@ argocd app create argo-cd \
 kubectl create namespace workflows
 kubectl create -f ./hello-world.yaml  
 ```
+
+Updating secrets:
+
+```sh
+kubectl -n workflows get secrets workflow-secrets -o json \
+  | jq '.data["github-password"] |= "<ENCODED-BASE64>"' \
+  | kubectl apply -f -
+```
