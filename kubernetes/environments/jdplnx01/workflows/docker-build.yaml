@@ -35,8 +35,6 @@ spec:
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace/src
-        args:
-          - sh
         source: |
           mkdir -p /kaniko/.docker
           AUTH=$(echo -n "test:pass" | base64)
