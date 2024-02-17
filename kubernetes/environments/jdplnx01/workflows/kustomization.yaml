@@ -5,3 +5,4 @@ resources:
 - ../../../base/stable/workflows
 - flashcards-build.yaml
 - langnotes-build.yaml
+- docker-build.yaml

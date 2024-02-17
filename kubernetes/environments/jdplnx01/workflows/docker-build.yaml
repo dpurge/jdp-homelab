@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  namespace: workflows
+  name: docker-build
+spec:
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: image
+        value: bitnami/kaniko:1.20.1
+      - name: repo
+        value: https://github.com/dpurge/jdp-docker.git
+      - name: branch
+        value: main
+  templates:
+    - name: main
+      steps:
+        - - name: jdp-buildenv
+            template: jdp-buildenv
+    - name: jdp-buildenv
+      inputs:
+        artifacts:
+        - name: source
+          path: /workspace/src
+          git:
+            repo: "{{workflow.parameters.repo}}"
+            revision: main
+            usernameSecret:
+              name: workflow-secrets
+              key: github-username
+            passwordSecret:
+              name: workflow-secrets
+              key: github-password
+      script:
+        image: "{{workflow.parameters.image}}"
+        workingDir: /workspace/src
+        args:
+          - sh
+        source: |
+          mkdir -p /kaniko/.docker
+          AUTH=$(echo -n "test:pass" | base64)
+          cat << EOF > /kaniko/.docker/config.json
+          {
+              "auths": {
+                  "https://index.docker.io/v1/": {
+                      "auth": "${AUTH}"
+                  }
+              }
+          }
+          EOF
+          /kaniko/executor \
+            --context /workspace/src/jdp-buildenv \
+            --dockerfile /workspace/src/jdp-buildenv/Dockerfile
+        volumeMounts:
+          - mountPath: /workspace
+            name: workspace
+  volumeClaimTemplates:
+    - name: workspace
+      metadata:
+        name: workspace
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 500Mi
