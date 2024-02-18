@@ -8,45 +8,23 @@ spec:
   arguments:
     parameters:
       - name: image
-        value: bitnami/kaniko:1.20.1
+        value: gcr.io/kaniko-project/executor:v1.20.1
       - name: repo
-        value: https://github.com/dpurge/jdp-docker.git
+        value: git://github.com/dpurge/jdp-docker.git
       - name: branch
         value: main
   templates:
     - name: main
-      steps:
-        - - name: jdp-buildenv
+      dag:
+        tasks:
+          - name: jdp-buildenv
             template: jdp-buildenv
     - name: jdp-buildenv
       inputs:
-        artifacts:
-        - name: source
-          path: /workspace/src
-          git:
-            repo: "{{workflow.parameters.repo}}"
-            revision: main
-            usernameSecret:
-              name: workflow-secrets
-              key: github-username
-            passwordSecret:
-              name: workflow-secrets
-              key: github-password
-      script:
+      container:
         image: "{{workflow.parameters.image}}"
-        workingDir: /workspace/src
-        args:
-          - --context=/workspace/src/jdp-buildenv
-          - --no-push
-        volumeMounts:
-          - mountPath: /workspace
-            name: workspace
-  volumeClaimTemplates:
-    - name: workspace
-      metadata:
-        name: workspace
-      spec:
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 500Mi
+        args: [
+          "--context", "{{workflow.parameters.repo}}",
+          "--context-sub-path", "jdp-buildenv",
+          "--no-push"
+        ]
