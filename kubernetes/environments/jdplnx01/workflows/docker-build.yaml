@@ -37,7 +37,7 @@ spec:
         workingDir: /workspace/src
         args:
           - --context=/workspace/src
-          - --context-sub-path jdp-buildenv
+          - --context-sub-path=jdp-buildenv
           - --no-push
         volumeMounts:
           - mountPath: /workspace
