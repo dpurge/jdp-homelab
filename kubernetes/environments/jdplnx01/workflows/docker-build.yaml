@@ -22,7 +22,7 @@ spec:
       inputs:
         artifacts:
         - name: source
-          path: /workspace/src
+          path: /workspace
           git:
             repo: "{{workflow.parameters.repo}}"
             revision: main
@@ -34,11 +34,9 @@ spec:
               key: github-password
       script:
         image: "{{workflow.parameters.image}}"
-        workingDir: /workspace/src
+        workingDir: /workspace
         args:
-          - --context=/workspace/src/jdp-buildenv
-          - --dockerfile /workspace/src/jdp-buildenv/Dockerfile
-          - --cache=false            
+          - --context=/workspace/jdp-buildenv
         volumeMounts:
           - mountPath: /workspace
             name: workspace
