@@ -36,7 +36,7 @@ spec:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace/src
         args:
-          - --dockerfile=/workspace/src/jdp-buildenv/Dockerfile
+          - --context=/workspace/src/jdp-buildenv
           - --no-push
         volumeMounts:
           - mountPath: /workspace
