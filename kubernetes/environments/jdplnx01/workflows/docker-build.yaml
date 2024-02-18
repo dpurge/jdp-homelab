@@ -11,14 +11,14 @@ spec:
         value: gcr.io/kaniko-project/executor:v1.20.1
       - name: repo
         value: git://github.com/dpurge/jdp-docker.git
-      - name: branch
-        value: main
+      - name: version
+        value: latest
   templates:
     - name: main
       dag:
         tasks:
-          - name: jdp-buildenv
-            template: jdp-buildenv
+        - name: jdp-buildenv
+          template: jdp-buildenv
     - name: jdp-buildenv
       inputs:
       container:
