@@ -30,7 +30,7 @@ spec:
           - mountPath: /workspace
             name: workspace
         args:
-          - sh
+          - /bin/bash
         source: |
           set -e
 
