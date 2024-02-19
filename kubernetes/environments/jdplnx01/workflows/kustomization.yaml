@@ -6,3 +6,4 @@ resources:
 - flashcards-build.yaml
 - langnotes-build.yaml
 - docker-build.yaml
+- youtube-download.yaml

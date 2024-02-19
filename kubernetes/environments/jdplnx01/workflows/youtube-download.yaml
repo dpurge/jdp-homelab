@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  namespace: workflows
+  name: youtube-download
+spec:
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: image
+        value: dpurge/jdp-buildenv:2024-02-17
+      - name: workspace
+        value: /var/jdpnas01/AppData/workflows/youtube
+  volumes:
+    - name: workspace
+      hostPath:
+        path: "{{workflow.parameters.workspace}}"
+        type: Directory
+  templates:
+    - name: main
+      dag:
+        tasks:
+        - name: download
+          template: youtube-download
+    - name: youtube-download
+      script:
+        image: "{{workflow.parameters.image}}"
+        workingDir: /workspace
+        volumeMounts:
+          - mountPath: /workspace
+            name: workspace
+        args:
+          - sh
+        source: |
+          set -e
+
+          workspace="/workspace"
+          cfg="config.txt"
+          
+          for i in $(find $workspace -type f -name $cfg)
+          do
+            pushd $(dirname $i) > /dev/null
+            echo "===== $i ====="
+            echo yt-dlp --config-location $cfg || true
+            popd > /dev/null
+          done
