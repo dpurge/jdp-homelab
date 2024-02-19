@@ -1,10 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
-kind: WorkflowTemplate
+kind: CronWorkflow
 metadata:
   namespace: workflows
   name: youtube-download
 spec:
-  entrypoint: main
+  schedule: "0 3 * * *"
+  timezone: "Europe/Warsaw"
+  startingDeadlineSeconds: 0
+  concurrencyPolicy: "Replace"      # Default to "Allow"
+  successfulJobsHistoryLimit: 2     # Default 3
+  failedJobsHistoryLimit: 1         # Default 1
+  suspend: false                    # Set to "true" to suspend scheduling
+  workflowSpec:
+    entrypoint: main
   arguments:
     parameters:
       - name: image
