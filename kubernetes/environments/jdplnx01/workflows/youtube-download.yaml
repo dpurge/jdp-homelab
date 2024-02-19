@@ -12,7 +12,7 @@ spec:
   failedJobsHistoryLimit: 1         # Default 1
   suspend: false                    # Set to "true" to suspend scheduling
   workflowSpec:
-    entrypoint: main
+    entrypoint: youtube
   arguments:
     parameters:
       - name: image
@@ -25,12 +25,7 @@ spec:
         path: "{{workflow.parameters.workspace}}"
         type: Directory
   templates:
-    - name: main
-      dag:
-        tasks:
-        - name: download
-          template: youtube-download
-    - name: youtube-download
+    - name: youtube
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace
