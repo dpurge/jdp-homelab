@@ -49,6 +49,6 @@ spec:
             do
               pushd $(dirname $i) > /dev/null
               echo "===== $i ====="
-              echo yt-dlp --config-location $cfg || true
+              yt-dlp --config-location $cfg || true
               popd > /dev/null
             done
