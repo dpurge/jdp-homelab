@@ -16,7 +16,7 @@ spec:
     arguments:
       parameters:
         - name: image
-          value: jauderho/yt-dlp:2024.03.10
+          value: dpurge/jdp-buildenv:2024-04-02
         - name: workspace
           value: /var/jdpnas01/AppData/workflows/youtube
     volumes:
