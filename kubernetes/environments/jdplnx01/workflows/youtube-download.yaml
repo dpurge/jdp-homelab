@@ -16,7 +16,7 @@ spec:
     arguments:
       parameters:
         - name: image
-          value: 192.168.10.22:5000/jdp-buildenv:2024-04-02
+          value: registry.home.arpa:5000/jdp-buildenv:2024-04-02
         - name: workspace
           value: /var/jdpnas01/AppData/workflows/youtube
     volumes:
