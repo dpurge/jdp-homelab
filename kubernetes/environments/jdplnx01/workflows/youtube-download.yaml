@@ -37,8 +37,8 @@ spec:
           volumeMounts:
             - mountPath: /workspace
               name: workspace
-          args:
-            - /bin/bash
+          command:
+            - bash
           source: |
             set -e
 
