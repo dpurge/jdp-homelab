@@ -46,8 +46,8 @@ spec:
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace/src
-        args:
-          - sh
+        command:
+            - bash
         source: |
           task build-all
           task pdf
@@ -61,8 +61,8 @@ spec:
       script:
         image: "{{workflow.parameters.image}}"
         workingDir: /workspace
-        args:
-          - sh
+        command:
+            - bash
         source: |
           mv {{workflow.parameters.dist}}/*.epub /artifacts/
           mv {{workflow.parameters.dist}}/*.pdf /artifacts/

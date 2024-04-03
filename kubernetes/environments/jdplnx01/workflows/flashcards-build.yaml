@@ -54,8 +54,8 @@ spec:
         script:
           image: "{{workflow.parameters.image}}"
           workingDir: /workspace/src
-          args:
-            - sh
+          command:
+            - bash
           source: |
             task build-all
             mv out {{workflow.parameters.dist}}
@@ -68,8 +68,8 @@ spec:
         script:
           image: "{{workflow.parameters.image}}"
           workingDir: /workspace
-          args:
-            - sh
+          command:
+            - bash
           source: |
             mv {{workflow.parameters.dist}}/*.apkg /artifacts/
             rm -Rf {{workflow.parameters.dist}}
