@@ -1,0 +1,16 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jupyter
+  namespace: jupyter
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`jupyter.home.arpa`)
+      services:
+        - kind: Service
+          name: jupyter-notebook
+          port: 8888

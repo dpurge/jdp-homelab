@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
 - namespace.yaml
-- docker-build.yaml
-- youtube-download.yaml
-- flashcards-build.yaml
-- langnotes-build.yaml
+- work-volume.yaml
+- deployment.yaml
+- service.yaml

@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-notebook
+  labels:
+    app: jupyter-notebook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter-notebook
+  template:
+    metadata:
+      labels:
+        app: jupyter-notebook
+    spec:
+      containers:
+        - name: scipy-notebook
+          image: jupyter/scipy-notebook:x86_64-python-3.11
+          volumeMounts:
+            - name: jupyter-work
+              mountPath: /home/jovyan/work/
+          ports:
+          - containerPort: 8888
+          command: ["start-notebook.sh"]
+          args: ["--NotebookApp.token=''"]
+      volumes:
+        - name: jupyter-work
+          persistentVolumeClaim:
+            claimName: jupyter-work
