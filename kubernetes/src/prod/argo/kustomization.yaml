@@ -3,7 +3,8 @@ kind: Kustomization
 
 resources:
 - namespace.yaml
-- https://github.com/argoproj/argo-workflows/releases/download/v3.5.7/install.yaml
+- github.com/argoproj/argo-workflows/manifests/cluster-install
+- github.com/argoproj/argo-events/manifests/cluster-install
 
 patches:
 - path: argo-server-secure-false.yaml
