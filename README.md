@@ -98,3 +98,11 @@ kubectl -n workflows get secrets workflow-secrets -o json \
   | jq '.data["github-password"] |= "<ENCODED-BASE64>"' \
   | kubectl apply -f -
 ```
+
+## Traefik
+
+```sh
+kubectl create namespace traefik
+kubectl get all --namespace traefik
+helm install traefik traefik/traefik --namespace traefik --dry-run
+```

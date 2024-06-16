@@ -1,0 +1,15 @@
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app: nfs-subdir-external-provisioner
+  name: run-infra-nfs-subdir-external-provisioner
+subjects:
+  - kind: ServiceAccount
+    name: infra-nfs-subdir-external-provisioner
+    namespace: infra
+roleRef:
+  kind: ClusterRole
+  name: infra-nfs-subdir-external-provisioner-runner
+  apiGroup: rbac.authorization.k8s.io
