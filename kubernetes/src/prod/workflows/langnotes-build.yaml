@@ -16,7 +16,7 @@ spec:
       - name: dist
         value: /workspace/dist
       - name: artifacts
-        value: /var/jdpnas01/AppData/workflows/langnotes
+        value: /mnt/jdpnas01/AppData/workflows/langnotes
   volumes:
     - name: artifacts
       hostPath:

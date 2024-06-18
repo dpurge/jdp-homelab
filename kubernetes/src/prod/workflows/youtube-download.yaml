@@ -16,9 +16,9 @@ spec:
     arguments:
       parameters:
         - name: image
-          value: registry.home.arpa:5000/jdp-buildenv:2024-04-03
+          value: jauderho/yt-dlp:2024.05.27
         - name: workspace
-          value: /var/jdpnas01/AppData/workflows/youtube
+          value: /mnt/jdpnas01/AppData/workflows/youtube
     volumes:
       - name: workspace
         hostPath:
@@ -38,7 +38,7 @@ spec:
             - mountPath: /workspace
               name: workspace
           command:
-            - bash
+            - sh
           source: |
             set -e
 
@@ -47,8 +47,7 @@ spec:
             
             for i in $(find $workspace -type f -name $cfg)
             do
-              pushd $(dirname $i) > /dev/null
+              cd $(dirname $i)
               echo "===== $i ====="
               yt-dlp --config-location $cfg || true
-              popd > /dev/null
             done

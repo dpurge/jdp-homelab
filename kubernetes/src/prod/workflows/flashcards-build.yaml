@@ -24,7 +24,7 @@ spec:
         - name: dist
           value: /workspace/dist
         - name: artifacts
-          value: /var/jdpnas01/AppData/workflows/flashcards
+          value: /mnt/jdpnas01/AppData/workflows/flashcards
     volumes:
       - name: artifacts
         hostPath:
