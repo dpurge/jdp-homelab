@@ -66,6 +66,6 @@ spec:
                   echo "Move: ${f}"
                   mv -f "${f}" "${video}/${PWD##*/}/${f}" || continue
                 done
-                rm -d "${d}" || continue
+                rm -d "${d%'/*'}" || continue
               done
             done
