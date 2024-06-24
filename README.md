@@ -99,6 +99,18 @@ kubectl -n workflows get secrets workflow-secrets -o json \
   | kubectl apply -f -
 ```
 
+Grant access to workflow service account:
+
+```sh
+kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=workflows:default --namespace=workflows
+```
+
+Run workflow manually:
+
+```sh
+argo submit --from cronwf/youtube-download -n workflows
+```
+
 ## Traefik
 
 ```sh

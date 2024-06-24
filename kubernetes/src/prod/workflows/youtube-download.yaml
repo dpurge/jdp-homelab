@@ -19,10 +19,16 @@ spec:
           value: jauderho/yt-dlp:2024.05.27
         - name: workspace
           value: /mnt/jdpnas01/AppData/workflows/youtube
+        - name: video
+          value: /mnt/jdpnas01/Multimedia/video/YouTube
     volumes:
       - name: workspace
         hostPath:
           path: "{{workflow.parameters.workspace}}"
+          type: Directory
+      - name: video
+        hostPath:
+          path: "{{workflow.parameters.video}}"
           type: Directory
     templates:
       - name: main
@@ -37,12 +43,15 @@ spec:
           volumeMounts:
             - mountPath: /workspace
               name: workspace
+            - mountPath: /video
+              name: video
           command:
             - sh
           source: |
             set -e
 
             workspace="/workspace"
+            video="/video"
             cfg="config.txt"
             
             for i in $(find $workspace -type f -name $cfg)
@@ -50,4 +59,13 @@ spec:
               cd $(dirname $i)
               echo "===== $i ====="
               yt-dlp --config-location $cfg || true
+              for d in */ ; do
+                [ "${d}" = "*/" ] && continue
+                mkdir -p "${video}/${PWD##*/}/${d}"
+                for f in ${d}*; do
+                  echo "Move: ${f}"
+                  mv -f "${f}" "${video}/${PWD##*/}/${f}" || continue
+                done
+                rm -d "${d}" || continue
+              done
             done
