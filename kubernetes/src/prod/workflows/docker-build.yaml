@@ -7,12 +7,10 @@ spec:
   entrypoint: main
   arguments:
     parameters:
-      - name: image
+      - name: executor
         value: gcr.io/kaniko-project/executor:v1.20.1
       - name: repo
         value: git://github.com/dpurge/jdp-docker.git
-      - name: version
-        value: latest
   templates:
     - name: main
       dag:
@@ -22,9 +20,11 @@ spec:
     - name: jdp-buildenv
       inputs:
       container:
-        image: "{{workflow.parameters.image}}"
+        image: "{{workflow.parameters.executor}}"
         args: [
           "--context", "{{workflow.parameters.repo}}",
           "--context-sub-path", "jdp-buildenv",
-          "--no-push"
+          "--destination", "registry.home.arpa:5000/jdp-buildenv:{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}",
+          "--destination", "registry.home.arpa:5000/jdp-buildenv:latest",
+          "--insecure"
         ]

@@ -16,7 +16,7 @@ spec:
     arguments:
       parameters:
         - name: image
-          value: registry.home.arpa:5000/jdp-buildenv:2024-04-03
+          value: registry.home.arpa:5000/jdp-buildenv:latest
         - name: repo
           value: https://github.com/dpurge/jdp-flashcards.git
         - name: branch
