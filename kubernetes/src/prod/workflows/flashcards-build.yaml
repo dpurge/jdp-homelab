@@ -57,7 +57,7 @@ spec:
                 key: github-password
         script:
           image: "{{workflow.parameters.image}}"
-          workingDir: /workspace
+          workingDir: /workspace/src
           # env:
           #   - name: GitHubPAT
           #     valueFrom:
