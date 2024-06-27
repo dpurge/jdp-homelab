@@ -109,7 +109,7 @@ Run workflow manually:
 
 ```sh
 argo submit --from cronwf/youtube-download -n workflows
-argo submit --from WorkflowTemplate/langnotes-build -n workflows
+argo submit --from cronwf/langnotes-build -n workflows
 argo submit --from cronwf/flashcards-build -n workflows
 ```
 
